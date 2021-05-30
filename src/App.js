@@ -4,7 +4,6 @@ import GuestList from './GuestList';
 function App() {
   return (
     <div className="App">
-      <span classname="title"></span>
       <GuestList />
     </div>
   );

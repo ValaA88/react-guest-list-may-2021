@@ -1,55 +1,91 @@
-import './App.css';
+import './guestList.css';
 import React, { useState } from 'react';
 
 function GuestList() {
-  const [task, setTask] = useState('');
-  const [tasklist, setTaskList] = useState([]);
+  const [guestList, setGuestList] = useState([]);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [date, setDate] = useState('');
 
-  const handleChange = (e) => {
-    setTask(e.target.value);
+  const handleAttending = (id) => {
+    alert('hello');
   };
 
-  const AddTask = () => {
-    if (task !== '') {
-      const taskDetails = {
-        value: task,
-        isCompleted: false,
-      };
-      setTaskList([...tasklist, taskDetails]);
-    }
+  const addGuest = () => {
+    // this add guest to the end of guestList array
+    // const newArray = [...oldArray , newItem]
+    // const newGuest = { fn: firstName, ln: lastName, date: date };
+    const newGuest = {
+      id: firstName + lastName,
+      firstName,
+      lastName,
+      date,
+      isAttended: 'No',
+    };
+    setGuestList([...guestList, newGuest]);
   };
 
-  const removetask = (e, id) => {
-    e.preventDefault();
-    setTaskList(tasklist.filter((t) => t.id != id));
+  const removeGuest = (id) => {
+    // HOW TO remove one item from an array
+    setGuestList(guestList.filter((guest) => guest.id !== id));
+  };
+
+  // const handleFirstName = (e) => {
+  //   setFirstName(e.target.value);
+  // };
+
+  const handleLastName = (e) => {
+    setLastName(e.target.value);
   };
 
   return (
-    <div className="guest">
-      <button className="add.btn" onClick={AddTask}>
-        Add to List
-      </button>
-      {tasklist !== [] ? (
+    <div className="container">
+      {guestList !== [] ? (
         <ul>
-          {tasklist.map((t) => (
-            <li className="listitem">
-              {t.value}
-              <button className="remove" onClick={(e) => removetask(e, t.id)}>
+          {guestList.map((guest) => (
+            <li>
+              {guest.firstName} {guest.lastName}{' '}
+              <span className="date">{guest.date}</span>
+              {guest.isAttended}
+              <button
+                className="button"
+                onClick={() => removeGuest(guest.id)} // you should write array function here
+              >
                 Remove
               </button>
-              <button className="done">Done</button>
+              <button
+                className="button"
+                onClick={() => handleAttending(guest.id)}
+              >
+                Attending
+              </button>
             </li>
           ))}
         </ul>
       ) : null}
-      <input
-        type="text"
-        onChange={(e) => handleChange(e)}
-        placeholder="First Name"
-        name="value"
-      />
-      <input type="text" placeholder="Last Name" name="value" />
-      <input type="datetime-local" name="deadline" />
+      <div>
+        <input
+          onChange={(e) => setFirstName(e.target.value)}
+          // version 1
+          type="text"
+          placeholder="First Name"
+          name="value"
+        />
+        <input
+          onChange={(e) => handleLastName(e)} // version 2
+          type="text"
+          placeholder="Last Name"
+          name="value"
+        />
+        <input
+          onChange={(e) => setDate(e.target.value)}
+          type="datetime-local"
+          name="deadline"
+        />
+      </div>
+      <button className="button" onClick={addGuest}>
+        Add to List
+      </button>
     </div>
   );
 }
